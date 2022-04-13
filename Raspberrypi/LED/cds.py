@@ -1,44 +1,33 @@
-#!/usr/local/bin/python
+import spidev 
+import time
 
-import RPi.GPIO as GPIO 
-import time # sleep 용도
+# 딜레이 시간(센서 측정 간격) 
+delay = 0.5
+# MCP3008 채널 중 센서에 연결한 채널 설정 
+pot_channel = 0
+# SPI 인스턴스 spi 생성 
+spi = spidev.SpiDev()
+# SPI 통신 시작하기 
+spi.open(0, 0)
+#SPI통신 속도 설정 
+spi.max_speed_hz = 100000
 
-GPIO.setmode(GPIO.BOARD)
-# GPIO.BOARD 보드 상의 핀 번호 사용
-# GPIO.BCM .  핀번호가 아니라 Broadcom SOC channel을 사용 GPIOXX의 XX 번호를 사용
+#0~7 까지 8개의 채널에서 SPI 데이터 읽기 
+def readadc(adcnum):
+    if adcnum < 0 or adcnum > 7:
+        return -1
+    r = spi.xfer2([1, 8+adcnum <<4, 0])
+    data = ((r[1] & 3) << 8) + r[2]
+    return data
 
-# 7번 핀을 사용함
-pin_to_circuit = 4
-
-def rc_time (pin_to_circuit):
-    count = 0
-
-    #Output on the pin for
-    GPIO.setup(pin_to_circuit, GPIO.OUT)   # 7번 핀을 입력으로 설정
-    GPIO.output(pin_to_circuit, GPIO.LOW)  # 7번 핀의 디지털 출력 설정
-    # 셋중에 아무거나 골라서 사용
-    # 1, GPIO.HIGH, True
-    # 0, GPIO.LOW, False
-                                                      
-    time.sleep(0.1)  # 0.1 sec sleep
-
-    # 7번 핀을 input으로 변경
-    GPIO.setup(pin_to_circuit, GPIO.IN)
-
-    # 7번 핀으로부터 읽은 값이 HIGH가 될 때까지 count 수행
-    # 그래서 실행해보면 센서 주변이 어두울 수록 카운트 값이 크다. 
-    while (GPIO.input(pin_to_circuit) == GPIO.LOW):
-        count += 1
-
-    return count
+while True:
+    # readadc 함수로 pot_channel의 SPI 데이터를 읽기 
+    pot_value = readadc(pot_channel) 
+    voltage = pot_value * 3.3/1024
+    
 
 
-# 스크립트가 인터럽트 될때 catch하고, 올바르게 cleanp
-try:
-    # 메인 루프
-    while True:
-        print(rc_time(pin_to_circuit)) # 조도 센서의 값 출력
-except KeyboardInterrupt:
-    pass
-finally:
-    GPIO.cleanup() # 사용했던 모든 포트에 대해서 정리
+    print("---------------------------") 
+    print(f"Reading={pot_value}\tVoltage={voltage:.2f}")
+
+    time.sleep(delay)
