@@ -23,10 +23,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_title">
 
@@ -34,16 +35,18 @@
             android:id="@+id/txt_temp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="140dp"
             android:layout_weight="1"
-            android:text="온도"
+            android:gravity="center"
+            android:text="온도(℃)"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/txt_tempval"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
@@ -65,14 +68,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="습도"
+            android:gravity="center"
+            android:text="습도(%)"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/txt_humidval"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
@@ -94,14 +100,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="미세먼지 농도"
+            android:gravity="center"
+            android:text="미세먼지(㎍/m)"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/txt_dustval"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
@@ -124,8 +133,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="175dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="284dp"
         android:layout_marginEnd="178dp"
+        android:drawableStart="@drawable/ic_baseline_house_24"
         android:text="나의 방 정보"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

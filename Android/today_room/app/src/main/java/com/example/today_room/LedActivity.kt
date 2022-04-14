@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -14,39 +13,45 @@ import com.example.mqtt_ex.Mqtt
 import kotlinx.android.synthetic.main.activity_humidity.*
 import kotlinx.android.synthetic.main.activity_led.*
 import kotlinx.android.synthetic.main.activity_led.btn_back
-import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val SUB_TOPIC = "Android" //받아오기
-private const val LED_TOPIC = "data/time" //led 시간 보내기
-private const val PUB_TOPIC = "data/led"
+private const val PUB_TOPIC = "data/time" //led 시간 보내기
+private const val LED_TOPIC = "Iot/LED"
 private const val SERVER_URI = "tcp://175.211.162.37:1883"
 
 class LedActivity : AppCompatActivity() {
+
     val TAG = "MqttActivity"
 
     lateinit var mqttClient: Mqtt
 
-    lateinit var tPicker: TimePicker
-    lateinit var tvHour : TextView
-    lateinit var tvMinute : TextView
-    var selectHour : Int = 0
-    var selectMinute : Int = 0
+    lateinit var text : String
+    lateinit var arr: List<String>
 
-    lateinit var start_hour : EditText
-    lateinit var start_min : EditText
-    lateinit var end_hour : EditText
-    lateinit var end_min : EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_led)
 
+        if (intent.hasExtra("time_data")){
+            text = intent.getStringExtra("time_data").toString()
+            arr = text.split(",")
+
+            Log.i("Mqtt_result", "수신] 데이터 값 : $text // $arr")
+
+        } else{
+            Log.i("Mqtt_result", "수신] 값 못받아왔음")
+        }
 //        start_hour.text = mqttClient.mqttClient.subscribe(SUB_TOPIC, )
 
+        start_hour.setText(arr[3])
+        start_min.setText(arr[4])
+        end_hour.setText(arr[5])
+        end_min.setText(arr[6])
 
         btn_setting.setOnClickListener { view ->
 
@@ -55,9 +60,11 @@ class LedActivity : AppCompatActivity() {
             var end_hour = end_hour.text.toString()
             var end_min = end_min.text.toString()
 
-            var time = String.format("%s,%s,%s,%s",start_hour,start_min,end_hour,end_min)
 
-            mqttClient.publish(LED_TOPIC, time)
+            var time = String.format("setting,mood,1,%s,%s,%s,%s",start_hour,start_min,end_hour,end_min)
+
+            mqttClient.publish(PUB_TOPIC, time)
+            Log.i("Mqtt_result", "전송] $time")
 
 
         }
@@ -67,16 +74,30 @@ class LedActivity : AppCompatActivity() {
             finish()
         }
 
-        switchLed.setOnCheckedChangeListener{ compoundButton, b ->
+        auto_led.setOnCheckedChangeListener{ compoundButton, b ->
             if(b){
-                mqttClient.publish(PUB_TOPIC, "ON")
+
+                var time = String.format("setting,mood,1,%s,%s,%s,%s",arr[3],arr[4],arr[5],arr[6])
+                mqttClient.publish(PUB_TOPIC, time)
+                Log.i("Mqtt_result", "전송] $time ")
 
             }else{
-                mqttClient.publish(PUB_TOPIC,"OFF")
-
+                var time = String.format("setting,mood,0,%s,%s,%s,%s",arr[3],arr[4],arr[5],arr[6])
+                mqttClient.publish(PUB_TOPIC,"time")
+                Log.i("Mqtt_result", "전송] $time ")
             }
         }
 
+        led_on.setOnClickListener{
+            mqttClient.publish(LED_TOPIC, "on")
+            Log.i("Mqtt_result", "전송] LED_ON ")
+
+        }
+
+        led_off.setOnClickListener{
+            mqttClient.publish(LED_TOPIC, "off")
+            Log.i("Mqtt_result", "전송] LED_OFF")
+        }
 //        mqttClient.mqttClient.subscribe(SUB_TOPIC,hour)
 
 
@@ -116,6 +137,4 @@ class LedActivity : AppCompatActivity() {
     }
 
 }
-
-
 
