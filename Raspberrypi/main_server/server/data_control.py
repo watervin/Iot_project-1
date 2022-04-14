@@ -10,19 +10,31 @@ def data_check(message,client):
 
     #init 패킷
         if(data_split[0] == 'init'):
-            #무드등init
+        #무드등init
+            #무드등센서 init
             if(data_split[1] == 'mood'):
                 value = file_open("mood_time")
                 client.publish('Iot/LED',f"init_return,mood,{value}")
                 print("iot/LED send")
                 pass
 
-            #안드로이드init
+            #안드로이드 무드등 init
             if(data_split[1] == 'android_mood'):
                 value = file_open("mood_time")
                 client.publish('Android',f"init_return,android_mood,{value}")
-                print("Android send")
+                print("Android_mood send")
                 pass
+
+
+        #화분init
+            #수분센서 init
+            if(data_split[1] == 'water'):
+                value = file_open("water_setting")
+                client.publish('Iot/water',f"init_return,water,{value}")
+                print("iot/water send")
+                pass
+
+        
     
     #setting요청
         if(data_split[0] == 'setting'):
@@ -34,7 +46,7 @@ def data_check(message,client):
                 end_time_m = data_split[6]
 
                 value = f"{status},{start_time_h},{start_time_m},{end_time_h},{end_time_m}"
-                file_write("mood_time_test",value)
+                file_write("mood_time",value)
 
                 client.publish('Iot/LED',f"setting,mood,{value}")
                 print("setting send")
@@ -48,6 +60,13 @@ def data_check(message,client):
             now = datetime.datetime.now()
             value = data_split[1]
             file_write("dust_sensor",f"{value},{now}")
+            pass
+
+        #수분센서
+        if(data_split[0] == 'water'):
+            now = datetime.datetime.now()
+            value = data_split[1]
+            file_write("water_sensor",f"{value},{now}")
             pass
 
     except:
