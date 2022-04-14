@@ -13,12 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".HumidityActivity"></activity>
+        <activity
+            android:name=".door"
+            android:exported="false" />
+        <activity
+            android:name=".myroom"
+            android:exported="false" /> <!-- <service android:name="org.eclipse.paho.android.service.MqttService" /> -->
+        <activity android:name=".MainActivity" />
+        <activity android:name=".HumidityActivity" />
         <activity android:name=".LedActivity" />
 
-        <service android:name="org.eclipse.paho.android.service.MqttService" />
-
-        <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 
 </manifest>

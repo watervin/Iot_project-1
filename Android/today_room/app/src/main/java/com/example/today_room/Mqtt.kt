@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
+
+
 class Mqtt(val ctx: Context, val uri: String) {
     val TAG ="Mqtt"
     var mqttClient: MqttAndroidClient
@@ -53,7 +55,7 @@ class Mqtt(val ctx: Context, val uri: String) {
     }
 
     // 토픽 publish
-    fun publish(topic: String, payload: String, qos: Int = 0) {
+    fun publish(topic: String?, payload: String, qos: Int = 0) {
         if(mqttClient.isConnected() === false) {
             mqttClient.connect()
         }
