@@ -6,27 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <FrameLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="204dp"
+        tools:layout_editor_absoluteY="274dp" >
 
-
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieView"
+            android:layout_width="415dp"
+            android:layout_height="123dp"
+            android:layout_marginTop="84dp"
+            android:scaleType="fitXY"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/main_room" />
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="411dp"
-        android:layout_height="89dp"
-        android:scaleType="centerCrop"
+        android:layout_width="423dp"
+        android:layout_height="97dp"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_logo" />
+        app:srcCompat="@drawable/logo2" />
 
     <Button
         android:id="@+id/btn1"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="188dp"
         android:layout_marginEnd="10dp"
@@ -40,8 +52,8 @@
 
     <Button
         android:id="@+id/btn2"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="188dp"
         android:layout_marginEnd="10dp"
@@ -55,22 +67,23 @@
 
     <Button
         android:id="@+id/btn3"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="188dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/button"
-        android:text="Button"
+        android:drawableLeft="@drawable/ic_baseline_house_24"
+        android:text="MY ROOM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn2"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/btn4"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/button"
@@ -82,11 +95,11 @@
 
     <Button
         android:id="@+id/btn5"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/button"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
