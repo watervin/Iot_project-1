@@ -55,7 +55,7 @@ class Mqtt(val ctx: Context, val uri: String) {
     }
 
     // 토픽 publish
-    fun publish(topic: String, payload: String, qos: Int = 0) {
+    fun publish(topic: String?, payload: String, qos: Int = 0) {
         if(mqttClient.isConnected() === false) {
             mqttClient.connect()
         }

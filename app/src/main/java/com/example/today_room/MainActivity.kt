@@ -41,17 +41,19 @@ class MainActivity : AppCompatActivity() {
         btn1.setOnClickListener {
             val intent = Intent(this, LedActivity::class.java)
             startActivity(intent)
-            mqttClient.publish(PUB_TOPIC, "get LED time")
+            mqttClient.publish(PUB_TOPIC, "Get LED Information")
         }
 
         btn2.setOnClickListener {
             val intent = Intent(this, HumidityActivity::class.java)
             startActivity(intent)
+            mqttClient.publish(PUB_TOPIC, "Get Humidity Information")
         }
 
         btn3.setOnClickListener {
             val intent = Intent(this, myroom::class.java)
             startActivity(intent)
+            mqttClient.publish(PUB_TOPIC, "Get my room Information")
         }
     }
 
