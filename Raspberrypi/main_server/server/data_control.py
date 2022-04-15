@@ -77,7 +77,7 @@ def data_check(message,client):
                 file_write("water_setting",value)
 
                 client.publish('Iot/water',f"setting,water,{value}")
-                print("mood setting send")
+                print("water setting send")
 
 
         
