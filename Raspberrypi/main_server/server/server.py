@@ -1,6 +1,8 @@
 import paho.mqtt.client as mqtt
 from data_control import data_check
 from file_init import file_init_setting
+import time
+
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -20,7 +22,8 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
     message = str(msg.payload.decode("utf-8"))
-    print(message)
+    current_time = time.strftime('%Y-%m-%d / %H:%M:%S', time.localtime(time.time()))
+    print(f"[{current_time}] {message}")
     data = data_check(message,client)
 
 #파일 초기화
