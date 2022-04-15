@@ -18,10 +18,13 @@ private const val SERVER_URI = "tcp://175.211.162.37:1883"
 
 class HumidityActivity : AppCompatActivity() {
 
+
+    //받아 오는값
+    // init,android water,현재 토양수분,활성화,기준토양
+
+
     val TAG = "MqttActivity"
-
     lateinit var mqttClient: Mqtt
-
     lateinit var text : String
     lateinit var arr: List<String>
     lateinit var Humidity_position : String
@@ -30,7 +33,7 @@ class HumidityActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_humidity)
 
-
+        //값 받아오기
         if (intent.hasExtra("time_data")) {
             text = intent.getStringExtra("time_data").toString()
             arr = text.split(",")
@@ -39,8 +42,19 @@ class HumidityActivity : AppCompatActivity() {
             Log.i("Mqtt_result", "수신] 값 못받아왔음")
         }
 
+        //
         soil_info.setText(arr[2])
         setting_soil.setText(arr[4])
+
+
+        if (arr[3] == "1"){
+            auto_water.isChecked = true
+            btn_set.setEnabled(true);
+        }
+        else{
+            auto_water.isChecked = false
+            btn_set.setEnabled(false);
+        }
 
         btn_back.setOnClickListener {
             finish()
@@ -50,8 +64,6 @@ class HumidityActivity : AppCompatActivity() {
         var Humidity = resources.getStringArray(R.array.my_array)
         spinner.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, Humidity)
-
-
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
 
@@ -70,24 +82,44 @@ class HumidityActivity : AppCompatActivity() {
 
         btn_set.setOnClickListener {
         setting_soil.setText(Humidity_position)
-            mqttClient.publish(PUB_TOPIC, "setting,water,1,$Humidity_position")
-            Log.i("Mqtt_result", "전송] setting,water,1,$Humidity_position")
 
+            if(arr[3] == "0") {
+                //switch가 꺼져있을때
+                mqttClient.publish(PUB_TOPIC, "setting,water,0,$Humidity_position")
+                Log.i("Mqtt_result", "전송] setting,water,0,$Humidity_position")
+                Toast.makeText(this@HumidityActivity, "기준 토양습도가 설정되었습니다 ", Toast.LENGTH_SHORT).show()
+            }
+
+
+            else if(arr[3] == "1") {
+                //switch가 켜져있을때
+                mqttClient.publish(PUB_TOPIC, "setting,water,1,$Humidity_position")
+                Log.i("Mqtt_result", "전송] setting,water,1,$Humidity_position")
+                Toast.makeText(this@HumidityActivity, "기준 토양습도가 설정되었습니다 ", Toast.LENGTH_SHORT).show()
+
+            }
 
 
     }
         auto_water.setOnCheckedChangeListener{ compoundButton, b ->
             if(b){
-                mqttClient.publish(PUB_TOPIC, "setting,water,1,10")
-                Log.i("Mqtt_result", "전송] setting,water,1,10")
+                //스위치가 켜져있을 때
+                btn_set.setEnabled(true);
+                var text = String.format("setting,water,1,%s",arr[4])
+                mqttClient.publish(PUB_TOPIC, text)
+                Log.i("Mqtt_result", "전송] $text ")
+                Toast.makeText(this@HumidityActivity, "물주기 자동 설정 ON", Toast.LENGTH_SHORT).show()
+                // init,android water,활성화여부,현재 토양수분,기준토양
 
-//                var text = String.format("setting,water,1,%s,%s",arr[3],arr[4],arr[5],arr[6])
-//                mqttClient.publish(PUB_TOPIC, text)
-//                Log.i("Mqtt_result", "전송] $text ")
 
             }else{
-                mqttClient.publish(PUB_TOPIC,"setting,water,0,0")
-                Log.i("Mqtt_result", "전송] setting,water,0,0")
+                //스위치가 꺼져있을 때
+                btn_set.setEnabled(false);
+
+                var text = String.format("setting,water,0,%s",arr[4])
+                mqttClient.publish(PUB_TOPIC, text)
+                Log.i("Mqtt_result", "전송] $text ")
+                Toast.makeText(this@HumidityActivity, "물주기 자동 설정 OFF", Toast.LENGTH_SHORT).show()
             }
 
         }
