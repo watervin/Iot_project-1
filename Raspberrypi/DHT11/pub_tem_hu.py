@@ -13,7 +13,7 @@ broker_port=1883
 client = mqtt.Client() #create new instance
 print("connecting to broker")
 client.connect(host=broker_address, port=broker_port)
-print("Subscribing to topic","temp/temp")
+print("Subscribing to topic","data/sensor")
 
 while True:
     try:
@@ -21,8 +21,9 @@ while True:
         temperature_c = dhtDevice.temperature
         temperature_f = temperature_c * (9 / 5) + 32
         humidity = dhtDevice.humidity
-        client.publish("temp/temp", str(temperature_c))
-        client.publish("temp/temp", str(humidity))
+        message = f"temperature,{temperature_c},{humidity}"
+        
+        client.publish("data/sensor", message)
         print(
             "Temp: {:.1f} C    Humidity: {}% ".format(
                 temperature_c, humidity
@@ -40,5 +41,5 @@ while True:
     except KeyboardInterrupt:
         print("bye")
 
-    time.sleep(600.0)
+    time.sleep(30.0)
 

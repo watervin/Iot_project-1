@@ -18,6 +18,8 @@ import time
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 
+
+from data_check import data_check
 # CDS 변수
 
 # 딜레이 시간(센서 측정 간격) 
@@ -38,7 +40,10 @@ nw = datetime.datetime.now() # 현재 시간 설정
 
 status = 0
 test = "" 
-val = [0,0,0,0,0,0,0]
+LED_val = [0]
+val_1 = [0,0,0,0,0,0,0]
+val_2 = [0,0,0,0,0,0,0]
+state = [0,0,0,0,0,0,0]
 
 
 # CDS(조도센서) 값 읽기
@@ -61,10 +66,27 @@ def on_subscribe(client, userdata, mid, granted_qos):
     print("subscribed: " + str(mid) + " " + str(granted_qos))
     
 def on_message(client, userdata, msg):
-    global val
+
+    global val_1
+    global val_2
+    global LED_val
+    global message
+
     print(str(msg.payload.decode("utf-8")))
-    test = str(msg.payload.decode("utf-8"))
-    val = test.split(",")
+    message = str(msg.payload.decode("utf-8"))
+    
+    state = data_check(LED_val,val_1, val_2, message)
+
+    print(f"state = {state}")
+ 
+    if ( state == [1,1,1,1,1,1,1]):
+        val_2 = message.split(",")
+    
+    if( state == [2,2,2,2,2,2,2]):
+        LED_val = message
+
+    
+
     
     
 
@@ -81,41 +103,77 @@ try:
     client.loop_start()
     
     
-    select_hour1 = int(val[3])
-    select_minute1 = int(val[4])
-    select1 = select_hour1 * 60 + select_minute1
-    
 
-    select_hour2 = int(val[5])
-    select_minute2 = int(val[6])
-    select2 = select_hour2 * 60 + select_minute2
-
-    nw_time = nw.hour *60 + nw.minute
 
 
     
     while 1:
-        # readadc 함수로 pot_channel의 SPI 데이터를 읽기 
-        pot_value = readadc(pot_channel)
-        if((val[2] == "1")&(1033 > nw_time >= 1020)):  # (select2 > nw_time >= select1)
-                if(pot_value >= 1000) :
-                    led.value = 1 # full brightness 
-                elif(1000 > pot_value >= 900) :
-                    led.value = 0.5 # half brightness 
-                elif(900 > pot_value):
-                    led.value = 0 # full brightness 
-                print(pot_value)
-                time.sleep(0.5)
-                
-        elif((val[2] == "1")&(nw_time >= 1033 )): #(nw_time >= select2 )
-                value = 0
-                led.value = value
-        elif((val[2]=="0")):
-                value = 0
-                led.value = value
 
-        time.sleep(1)
-        pass
+        try:    
+                # readadc 함수로 pot_channel의 SPI 데이터를 읽기 
+            pot_value = readadc(pot_channel)
+            if(LED_val=="on"):
+                led.value = 1
+                print("LED ON")
+                LED_val = ""
+
+            elif(LED_val=="off"):
+                led.value = 0
+                print("LED OFF")
+                LED_val = ""
+
+                    
+                  
+            if (val_2[0] == "init_return")or(val_2[0]=="setting"):
+                print(f"result1 = {val_2[0]}")
+                if val_2[1] == "mood":
+
+                    print(f"result2 = {val_2[1]}")
+                    
+
+                    # 첫 번째 설정 시간
+                    select_hour1 = int(val_2[3])
+                    select_minute1 = int(val_2[4])
+                    select1 = select_hour1 * 60 + select_minute1
+
+                    # 두 번째 설정 시간
+                    select_hour2 = int(val_2[5])
+                    select_minute2 = int(val_2[6])
+                    select2 = select_hour2 * 60 + select_minute2
+
+                    nw_time_hour = nw.hour
+                    nw_time_minute = nw.minute
+                    nw_time = nw_time_hour * 60 + nw_time_minute
+
+                    if(val_2[2] == "1"):
+                        print(f"result3 = {val_2[2]}")
+                        
+                        if(select2 > nw_time >= select1):  # (select2 > nw_time >= select1)
+                                print(f"result3 = {val_2}")
+                                if(pot_value >= 1000) :
+                                    print(f"result4 = LED on ")
+                                    led.value = 1 # full brightness 
+                                elif(1000 > pot_value >= 900) :
+                                    led.value = 0.5 # half brightness 
+                                elif(960 > pot_value):
+                                    led.value = 0 # full brightness 
+                                print(pot_value)
+                                
+                                
+                        elif(nw_time >= select2 ): #(nw_time >= select2 )
+                                led.value = 0
+                    elif(val_2[2]=="0"):
+                            led.value = 0
+                val_2 = [0,0,0,0,0,0,0]                
+            time.sleep(3)
+
+        except KeyboardInterrupt:
+            print("bye!")
+            exit()
+        except:
+            print("message error")
+            time.sleep(1)
+            pass
 
 except KeyboardInterrupt:
     print("bye")
