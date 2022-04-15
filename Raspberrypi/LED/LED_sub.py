@@ -45,6 +45,7 @@ val_1 = [0,0,0,0,0,0,0]
 val_2 = [0,0,0,0,0,0,0]
 state = [0,0,0,0,0,0,0]
 auto_led = 0
+auto_led_stop = 0
 
 
 # CDS(조도센서) 값 읽기
@@ -95,13 +96,16 @@ def current_time():
 
     
 def cds_control(select1,select2,nw_time):
+
+    global auto_led_stop
+
     if(auto_led == 1):
         if(select2 > nw_time >= select1):  # (select2 > nw_time >= select1)
-                #print(f"result3 = {val_2}")
+                
                 #print(pot_value)
 
                 #방이 어두워지면 켜지고
-                if(pot_value >= 900) :
+                if(pot_value >= 800) :
                     #print(f"result4 = LED on ")
                     led.value = 1 # full brightness 
                 #방이 밝아지면 꺼진다.
@@ -109,8 +113,16 @@ def cds_control(select1,select2,nw_time):
                     led.value = 0
                 
                 
-        elif(select2+5>=nw_time >= select2 ): #(nw_time >= select2 )
+        elif( select2+1 > nw_time >= select2 ): #(nw_time >= select2 )
+            if(auto_led_stop == 0):
                 led.value = 0
+                auto_led_stop = 1
+                
+        
+        elif(nw_time >= select2+1):
+            if(auto_led_stop == 1):
+                auto_led_stop = 0
+
     elif(auto_led==0):
             led.value = 0
     
@@ -185,7 +197,8 @@ try:
         except KeyboardInterrupt:
             print("bye!")
             exit()
-        except:
+        except Exception as s:
+            print(s)
             print("message error")
             time.sleep(1)
             pass
