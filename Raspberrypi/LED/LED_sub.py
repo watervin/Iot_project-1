@@ -36,7 +36,7 @@ spi.max_speed_hz = 100000
 
 
 led = PWMLED(14)
-nw = datetime.datetime.now() # 현재 시간 설정
+
 
 status = 0
 test = "" 
@@ -44,6 +44,7 @@ LED_val = [0]
 val_1 = [0,0,0,0,0,0,0]
 val_2 = [0,0,0,0,0,0,0]
 state = [0,0,0,0,0,0,0]
+auto_led = 0
 
 
 # CDS(조도센서) 값 읽기
@@ -85,8 +86,33 @@ def on_message(client, userdata, msg):
     if( state == [2,2,2,2,2,2,2]):
         LED_val = message
 
-    
+def current_time():
+    nw = datetime.datetime.now() # 현재 시간 설정
+    nw_time_hour = nw.hour
+    nw_time_minute = nw.minute
+    nw_time = nw_time_hour * 60 + nw_time_minute
+    return nw_time
 
+    
+def cds_control(select1,select2,nw_time):
+    if(auto_led == 1):
+        if(select2 > nw_time >= select1):  # (select2 > nw_time >= select1)
+                #print(f"result3 = {val_2}")
+                #print(pot_value)
+
+                #방이 어두워지면 켜지고
+                if(pot_value >= 900) :
+                    #print(f"result4 = LED on ")
+                    led.value = 1 # full brightness 
+                #방이 밝아지면 꺼진다.
+                else : 
+                    led.value = 0
+                
+                
+        elif(select2+5>=nw_time >= select2 ): #(nw_time >= select2 )
+                led.value = 0
+    elif(auto_led==0):
+            led.value = 0
     
     
 
@@ -103,8 +129,8 @@ try:
     client.loop_start()
     
     
-
-
+    i = 0
+    nv_time = 0
 
     
     while 1:
@@ -129,7 +155,7 @@ try:
                 if val_2[1] == "mood":
 
                     print(f"result2 = {val_2[1]}")
-                    
+                    auto_led = int(val_2[2])
 
                     # 첫 번째 설정 시간
                     select_hour1 = int(val_2[3])
@@ -141,31 +167,20 @@ try:
                     select_minute2 = int(val_2[6])
                     select2 = select_hour2 * 60 + select_minute2
 
-                    nw_time_hour = nw.hour
-                    nw_time_minute = nw.minute
-                    nw_time = nw_time_hour * 60 + nw_time_minute
 
-                    if(val_2[2] == "1"):
-                        print(f"result3 = {val_2[2]}")
-                        
-                        if(select2 > nw_time >= select1):  # (select2 > nw_time >= select1)
-                                print(f"result3 = {val_2}")
-                                if(pot_value >= 1000) :
-                                    print(f"result4 = LED on ")
-                                    led.value = 1 # full brightness 
-                                elif(1000 > pot_value >= 900) :
-                                    led.value = 0.5 # half brightness 
-                                elif(960 > pot_value):
-                                    led.value = 0 # full brightness 
-                                print(pot_value)
-                                
-                                
-                        elif(nw_time >= select2 ): #(nw_time >= select2 )
-                                led.value = 0
-                    elif(val_2[2]=="0"):
-                            led.value = 0
-                val_2 = [0,0,0,0,0,0,0]                
-            time.sleep(3)
+                    
+                val_2 = [0,0,0,0,0,0,0]
+
+            #1분마다 시간 체크
+            if(i>=10):
+                i = 0
+                #print(select1," ",select2," ",nv_time)
+                #print(auto_led)
+                nv_time = current_time()
+                cds_control(select1,select2,nv_time)
+
+            i = i+1;       
+            time.sleep(0.1)
 
         except KeyboardInterrupt:
             print("bye!")
