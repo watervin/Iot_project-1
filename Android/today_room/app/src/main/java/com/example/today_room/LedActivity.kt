@@ -17,12 +17,18 @@ import java.util.*
 private const val SUB_TOPIC = "Android" //받아오기
 private const val PUB_TOPIC = "data/time" //led 시간 보내기
 private const val LED_TOPIC = "Iot/LED"
+private const val LIGTH_TOPIC = "Iot/light"
 private const val SERVER_URI = "tcp://175.211.162.37:1883"
-
+//무드등 값
 class LedActivity : AppCompatActivity() {
 
-    //받아 오는값
+    // 무드등 : 받아 오는값
     // init,android mood,활성화여부,시작시간,시작 분,종료시간,종료 분
+
+    // 전등 : 받아오는값
+    // "on" , "off"
+    //경로 : Iot/light
+
 
     //선언
     val TAG = "MqttActivity"
@@ -103,16 +109,16 @@ class LedActivity : AppCompatActivity() {
                 var time = String.format("setting,mood,1,%s,%s,%s,%s",arr[3],arr[4],arr[5],arr[6])
                 mqttClient.publish(PUB_TOPIC, time)
                 Log.i("Mqtt_result", "전송] $time ")
-                Toast.makeText(this,"LED 자동설정 ON",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"무드등 자동설정 ON",Toast.LENGTH_SHORT).show()
 
 
             }else{
                 //꺼질 때
                 btn_setting.setEnabled(false);
                 var time = String.format("setting,mood,0,%s,%s,%s,%s",arr[3],arr[4],arr[5],arr[6])
-                mqttClient.publish(PUB_TOPIC,"time")
+                mqttClient.publish(PUB_TOPIC,time)
                 Log.i("Mqtt_result", "전송] $time ")
-                Toast.makeText(this,"LED 자동설정 OFF",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"무드등 자동설정 OFF",Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -120,7 +126,7 @@ class LedActivity : AppCompatActivity() {
         led_on.setOnClickListener{
             mqttClient.publish(LED_TOPIC, "on")
             Log.i("Mqtt_result", "전송] LED_ON ")
-            Toast.makeText(this,"LED ON",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"무드등 ON",Toast.LENGTH_SHORT).show()
 
         }
 
@@ -128,10 +134,22 @@ class LedActivity : AppCompatActivity() {
         led_off.setOnClickListener{
             mqttClient.publish(LED_TOPIC, "off")
             Log.i("Mqtt_result", "전송] LED_OFF")
+            Toast.makeText(this,"무드등 OFF",Toast.LENGTH_SHORT).show()
+        }
+
+        //LIGTH ON
+        Main_led_on.setOnClickListener{
+            mqttClient.publish(LIGTH_TOPIC, "on")
+            Log.i("Mqtt_result", "전송] LED_ON ")
+            Toast.makeText(this,"LED ON",Toast.LENGTH_SHORT).show()
+        }
+
+        //LIGTH OFF
+        Main_led_off.setOnClickListener{
+            mqttClient.publish(LIGTH_TOPIC, "off")
+            Log.i("Mqtt_result", "전송] LED_OFF")
             Toast.makeText(this,"LED OFF",Toast.LENGTH_SHORT).show()
         }
-//        mqttClient.mqttClient.subscribe(SUB_TOPIC,hour)
-
 
         mqttClient = Mqtt(this, SERVER_URI)
         try {

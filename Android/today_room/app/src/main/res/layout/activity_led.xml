@@ -31,9 +31,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_setting">
+        app:layout_constraintTop_toBottomOf="@+id/btn_setting"
+        app:layout_constraintVertical_bias="0.015">
 
         <Button
             android:id="@+id/led_on"
@@ -43,7 +46,7 @@
             android:layout_marginStart="100dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/button"
-            android:text="LED ON" />
+            android:text="무드등 ON" />
 
         <Button
             android:id="@+id/led_off"
@@ -52,7 +55,7 @@
             android:layout_gravity="center"
             android:background="@drawable/button"
             android:gravity="center"
-            android:text="LED OFF" />
+            android:text="무드등 OFF" />
     </LinearLayout>
 
     <Switch
@@ -62,7 +65,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
-        android:text="LED 자동설정 ON/OFF"
+        android:text="무드등 자동설정 ON/OFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -83,7 +86,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -207,5 +211,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lottieView" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="407dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <Button
+            android:id="@+id/Main_led_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/button"
+            android:text="전등 ON" />
+
+        <Button
+            android:id="@+id/Main_led_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button"
+            android:gravity="center"
+            android:text="전등 OFF" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

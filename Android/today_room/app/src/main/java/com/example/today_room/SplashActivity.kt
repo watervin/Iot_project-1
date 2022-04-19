@@ -14,7 +14,7 @@ class SplashActivity : AppCompatActivity() {
 
         var lodingImage = findViewById(R.id.loading_image) as LottieAnimationView
 
-        // 애니메이션 시작
+        // 로딩화면 애니메이션 시작을 위한 코드
         lodingImage.playAnimation()
 
         val handler: Handler = Handler()
