@@ -1,10 +1,9 @@
-import datetime
-from multiprocessing.dummy import Value
-from file_control import file_open, file_write
+import datetime, time
+import paho.mqtt.publish as publish
+from file_control import file_open, file_write, file_list_print, image_byte
 
 
 def data_check(message,client):
-
     try:
         data_split = message.split(',')
 
@@ -50,6 +49,20 @@ def data_check(message,client):
                 client.publish('Android',f"init_return,android_room,{value},{value2}")
                 print("android_room send")
                 pass
+
+        #택배사진 정보 init
+            #안드로이드 사진정보요청
+            if(data_split[1] == 'android_delivery'):
+                photo_name = file_list_print()
+                header = "photo,"
+                photo_name_list = ','.join(photo_name)
+                send_msg = header + photo_name_list
+                
+                #print(send_msg)
+
+                client.publish('Android',send_msg)
+                print("android_delivery send")
+                pass
         
     
     #setting요청
@@ -79,8 +92,6 @@ def data_check(message,client):
                 client.publish('Iot/water',f"setting,water,{value}")
                 print("water setting send")
 
-
-        
 
     #센서
         #미세먼지 센서
@@ -112,6 +123,17 @@ def data_check(message,client):
             #file_write("temperature_sensor",f"{sensor_value:.1f},{now}")
             file_write("temperature_sensor",f"{temperature:.1f},{humidity:.1f}")
             pass
+
+    #이미지
+        if(data_split[0] == 'photo'):
+            value = data_split[1]
+            byteArr = image_byte(value)
+            time.sleep(0.3)
+            publish.single("Android/image", byteArr, hostname="175.211.162.37")
+            if(byteArr!=-1):
+                print(f"이미지 전송 [{value}]")
+            else:
+                print("전송실패")
 
     except:
         print("recv_data error")
