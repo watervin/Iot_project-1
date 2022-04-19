@@ -6,7 +6,7 @@ import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 
 
-class Mqtt(val ctx: Context, val uri: String) {
+class Mqtt(val ctx: Context?, val uri: String) {
     val TAG ="Mqtt"
     var mqttClient: MqttAndroidClient
     init {

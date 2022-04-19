@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".door"
+            android:name=".PhotoDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListViewAdapter"
+            android:exported="false" />
+
+        <activity
+            android:name=".deliveryActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".doorActivity"
             android:exported="false" />
         <activity
             android:name=".myroom"
@@ -22,7 +34,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".HumidityActivity" />
         <activity android:name=".LedActivity" />
-
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 

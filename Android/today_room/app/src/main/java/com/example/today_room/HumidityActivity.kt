@@ -21,8 +21,6 @@ class HumidityActivity : AppCompatActivity() {
 
     //받아 오는값
     // init,android water,현재 토양수분,활성화,기준토양
-
-
     val TAG = "MqttActivity"
     lateinit var mqttClient: Mqtt
     lateinit var text : String
