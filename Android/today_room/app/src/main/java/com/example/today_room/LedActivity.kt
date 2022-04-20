@@ -51,7 +51,7 @@ class LedActivity : AppCompatActivity() {
             Log.i("Mqtt_result", "수신] 값 못받아왔음")
         }
 
-//받아온 값을 셋팅
+        //받아온 값을 셋팅
         start_hour.setText(arr[3])
         start_min.setText(arr[4])
         end_hour.setText(arr[5])
@@ -168,22 +168,5 @@ class LedActivity : AppCompatActivity() {
     fun publish() {
         mqttClient.publish(PUB_TOPIC, "1")
     }
-
-
-    //시간 받기
-//    fun getTime(button: Button, context: Context){
-//
-//        val cal = Calendar.getInstance()
-//
-//        val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-//            cal.set(Calendar.HOUR_OF_DAY, hour)
-//            cal.set(Calendar.MINUTE, minute)
-//
-//            button.text = SimpleDateFormat("HH:mm").format(cal.time)
-//        }
-//
-//        TimePickerDialog(context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
-//
-//    }
 
 }

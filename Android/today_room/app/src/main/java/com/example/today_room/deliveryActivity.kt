@@ -26,8 +26,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 
 private const val SUB_TOPIC = "Android" //받아오기
 private const val PUB_TOPIC = "data/time" //led 시간 보내기
-private const val LED_TOPIC = "Iot/LED"
-private const val delivery_TOPIC = "Android/notification"
 private const val SERVER_URI = "tcp://175.211.162.37:1883"
 
 class deliveryActivity : AppCompatActivity() {
@@ -50,20 +48,14 @@ class deliveryActivity : AppCompatActivity() {
         photoListView.adapter = adapter
 
         photoListView.setOnItemClickListener { parent: AdapterView<*>, view: View, position: Int, id: Long ->
-            val item = parent.getItemAtPosition(position) as ListViewItem
-//            val photo_info = items[position].toString()
+
             val myIntent = Intent(this, PhotoDetailActivity::class.java)
-//            Log.i("photo_data", "사진 데이터 : $item")
-//            var index = photo_info.indexOf("=")
-//            Log.i("photo_data", "인덱스 번호 : $index")
-//            val photo_data = photo_info.substring(index..-1)
             val photoDate = items.get(position).title
 
             mqttClient.publish(PUB_TOPIC, "photo,"+ photoDate)
 
             myIntent.putExtra("photo_data", photoDate)
             startActivity(myIntent)
-
         }
 
 
@@ -80,7 +72,6 @@ class deliveryActivity : AppCompatActivity() {
 
         for(i in photo_arr){
             items.add(ListViewItem(i))
-
         }
 
 
@@ -90,20 +81,18 @@ class deliveryActivity : AppCompatActivity() {
 
         mqttClient = Mqtt(this, SERVER_URI)
         try {
-            // mqttClient.setCallback { topic, message ->}
             mqttClient.setCallback(::onReceived)
             mqttClient.connect(arrayOf<String>(SUB_TOPIC))
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
+        //***여기서부터
         //알람
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent
             .getActivity(this, 0, notificationIntent, FLAG_UPDATE_CURRENT)
 
-        //알람
-//        var button = findViewById(R.id.button) as Button
         if (arr[0] == "arrived_box") {
             Log.i("Mqtt_result", "***여기가 실행되야함")
             var builder = NotificationCompat.Builder(this, "MY_channel")
@@ -130,8 +119,6 @@ class deliveryActivity : AppCompatActivity() {
 
                 // 알림 표시: 알림의 고유 ID(ex: 1002), 알림 결과
                 notificationManager.notify(1002, builder.build())
-
-
             }
         }
     }

@@ -18,15 +18,17 @@
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/drawable/button.xml" value="0.1" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/drawable/ic_baseline_house_24.xml" value="0.1" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/drawable/ic_box.xml" value="0.1" />
+        <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_blind.xml" value="0.16666666666666666" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_cctv.xml" value="0.11979166666666667" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_delivery.xml" value="0.22" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_delivery_detail.xml" value="0.13177083333333334" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_door.xml" value="0.11979166666666667" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_humidity.xml" value="0.22" />
-        <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_led.xml" value="0.22" />
-        <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_led.xml" value="0.3333333333333333" />
+        <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_main_led.xml" value="0.22" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_myroom.xml" value="0.16666666666666666" />
+        <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_pet_feed.xml" value="0.14666666666666667" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_photo_detail.xml" value="0.1" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/activity_splash.xml" value="0.11145833333333334" />
         <entry key="..\:/workspace/Iot_project-1/Android/today_room/app/src/main/res/layout/custom_list_item.xml" value="0.14666666666666667" />

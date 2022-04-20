@@ -22,9 +22,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 
 private const val SUB_TOPIC = "Android" //받아오기
 private const val PUB_TOPIC = "data" //led 시간 보내기
-//private const val PUB_TOPIC = "data/led"
 private const val SERVER_URI = "tcp://175.211.162.37:1883"
-private const val delivery_TOPIC = "Android/notification"
 var test_data = ""
 
 
@@ -33,11 +31,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var msg : String
 
     fun notification(): Unit{
-
-
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent
-            .getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
 
         Log.i("Mqtt_result", "***여기가 실행되야함")
@@ -56,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             val channel = NotificationChannel(channel_id, channel_name, importance).apply {
                 description = descriptionText
             }
-// 만든 채널 정보를 시스템에 등록
+            // 만든 채널 정보를 시스템에 등록
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -71,18 +64,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent
-            .getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         btn1.setOnClickListener {
             val intent = Intent(this, LedActivity::class.java)
-
             mqttClient.publish(PUB_TOPIC, "init,android_mood")
             //0.05초 뒤 화면전환
             Handler().postDelayed({ intent_call(intent) }, 100L)
             Log.i("Mqtt_result", "전송] android_mood ")
-
         }
 
         btn2.setOnClickListener {
@@ -109,7 +97,21 @@ class MainActivity : AppCompatActivity() {
             Log.i("Mqtt_result", "전송] android_delivery ")
         }
 
+        btn5.setOnClickListener {
+            val intent = Intent(this, BlindActivity::class.java)
+            mqttClient.publish(PUB_TOPIC, "init,android_blind")
+            //0.05초 뒤 화면전환
+            Handler().postDelayed({ intent_call(intent) }, 100L)
+            Log.i("Mqtt_result", "전송] android_delivery ")
+        }
 
+        btn6.setOnClickListener {
+            val intent = Intent(this, PetFeedActivity::class.java)
+            mqttClient.publish(PUB_TOPIC, "init,android_pet_feed")
+            //0.05초 뒤 화면전환
+            Handler().postDelayed({ intent_call(intent) }, 100L)
+            Log.i("Mqtt_result", "전송] android_pet_feed ")
+        }
 
         mqttClient = Mqtt(this, SERVER_URI)
         try {
@@ -120,29 +122,18 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
-
 
 
     fun onReceived(topic: String?, message: MqttMessage) {
         // 토픽 수신 처리
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent
-            .getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
         val msg = String(message.payload)
         Log.i("Mqtt_result","수신메세지: $msg")
         test_data = msg //문자열, 비트
-
         //알람
         if (msg == "arrived_box"){
             notification()
         }
-        //이미지 변환하는 코드
-        val sentence = byteArrayToBitmap(message.payload)
-        image.setImageBitmap(sentence)
-
         Log.i("Mqtt_result","수신메세지: "+test_data)
     }
 
@@ -152,22 +143,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
 
     }
-
-    fun byteArrayToBitmap(test_data: ByteArray): Bitmap {
-        return BitmapFactory.decodeByteArray(test_data, 0, test_data.size)
-    }
-
-    fun startService(){
-
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         if (msg == "arrived_box"){
             notification()
         }
     }
-
-
-
 }
