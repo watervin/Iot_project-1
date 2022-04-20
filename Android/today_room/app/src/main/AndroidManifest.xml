@@ -15,16 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".BlindActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PetFeedActivity"
+            android:exported="false" />
+        <activity
             android:name=".PhotoDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ListViewAdapter"
             android:exported="false" />
-
         <activity
             android:name=".deliveryActivity"
             android:exported="false" />
-
         <activity
             android:name=".doorActivity"
             android:exported="false" />
@@ -41,6 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 

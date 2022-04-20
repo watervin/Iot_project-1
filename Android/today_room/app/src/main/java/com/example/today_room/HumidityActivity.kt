@@ -13,7 +13,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 
 private const val SUB_TOPIC = "Android" //받아오기
 private const val PUB_TOPIC = "data/time" //led 시간 보내기
-//private const val PUB_TOPIC = "data/led"
 private const val SERVER_URI = "tcp://175.211.162.37:1883"
 
 class HumidityActivity : AppCompatActivity() {
@@ -40,7 +39,7 @@ class HumidityActivity : AppCompatActivity() {
             Log.i("Mqtt_result", "수신] 값 못받아왔음")
         }
 
-        //
+
         soil_info.setText(arr[2])
         setting_soil.setText(arr[4])
 
@@ -64,16 +63,13 @@ class HumidityActivity : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, Humidity)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
 
                 Humidity_position = Humidity[position].toString()
                 Log.i("Mqtt", "수신] 데이터 값 : $Humidity_position")
-//                setting_soil.setText(Humidity_position)
 
             }
         }

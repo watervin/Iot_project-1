@@ -12,7 +12,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 
 private const val SUB_TOPIC = "Android" //받아오기
 private const val PUB_TOPIC = "data/time" //led 시간 보내기
-//private const val PUB_TOPIC = "data/led"
 private const val SERVER_URI = "tcp://175.211.162.37:1883"
 
 class myroom : AppCompatActivity() {
@@ -27,7 +26,6 @@ class myroom : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_myroom)
-
 
         // 값 받아오기
         if (intent.hasExtra("time_data")){
@@ -58,7 +56,6 @@ class myroom : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-
     fun onReceived(topic: String, message: MqttMessage) {
         // 토픽 수신 처리
         val msg = String(message.payload)
@@ -66,6 +63,5 @@ class myroom : AppCompatActivity() {
     fun publish() {
         mqttClient.publish(PUB_TOPIC, "1")
     }
-
 
 }
