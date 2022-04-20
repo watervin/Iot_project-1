@@ -64,8 +64,38 @@ def data_check(message,client):
                 print("android_delivery send")
                 pass
         
+        #펫 사료 init
+            #펫 사료 센서 요청
+            if(data_split[1] == 'pet_feed'):
+                value = file_open("pet_eat")
+                client.publish('Iot/pet',f"init_return,pet_feed,{value}")
+                print("iot/pet send")
+                pass
+
+            #안드로이드 펫 시간 요청
+            if(data_split[1] == 'android_pet_feed'):
+                value = file_open("pet_eat")
+                client.publish('Android',f"init_return,android_pet_feed,{value}")
+                print("Android_pet send")
+                pass
+
+        #블라인드 init
+            #블라인드 센서 요청
+            if(data_split[1] == 'blind'):
+                value = file_open("blind_time")
+                client.publish('Iot/blind',f"init_return,blind,{value}")
+                print("iot/blind send")
+                pass
+
+            #안드로이드 블라인드 시간 요청
+            if(data_split[1] == 'android_blind'):
+                value = file_open("blind_time")
+                client.publish('Android',f"init_return,android_blind,{value}")
+                print("Android_blind send")
+                pass
     
     #setting요청
+        #무드등 세팅
         if(data_split[0] == 'setting'):
             if(data_split[1] == 'mood'):
                 status = data_split[2]
@@ -79,8 +109,7 @@ def data_check(message,client):
 
                 client.publish('Iot/LED',f"setting,mood,{value}")
                 print("mood setting send")
-
-        if(data_split[0] == 'setting'):
+        #수분센서 세팅
             if(data_split[1] == 'water'):
                 status = data_split[2]
                 water_setting = data_split[3]
@@ -91,6 +120,32 @@ def data_check(message,client):
 
                 client.publish('Iot/water',f"setting,water,{value}")
                 print("water setting send")
+        #펫 사료 시간 세팅
+            if(data_split[1] == 'pet_feed'):
+                status = data_split[2]
+                time_h_1 = data_split[3]
+                time_m_1 = data_split[4]
+                time_h_2 = data_split[5]
+                time_m_2 = data_split[6]
+
+                value = f"{status},{time_h_1},{time_m_1},{time_h_2},{time_m_2}"
+                file_write("pet_eat",value)
+
+                client.publish('Iot/pet',f"setting,pet_feed,{value}")
+                print("pet setting send")
+        #blind 시간 세팅
+            if(data_split[1] == 'blind'):
+                status = data_split[2]
+                time_h_1 = data_split[3]
+                time_m_1 = data_split[4]
+                time_h_2 = data_split[5]
+                time_m_2 = data_split[6]
+
+                value = f"{status},{time_h_1},{time_m_1},{time_h_2},{time_m_2}"
+                file_write("blind_time",value)
+
+                client.publish('Iot/blind',f"setting,blind,{value}")
+                print("blind setting send")
 
 
     #센서
