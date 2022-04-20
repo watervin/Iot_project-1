@@ -12,6 +12,8 @@ def file_init_setting():
         "water_sensor",
         "water_setting",
         "temperature_sensor",
+        "pet_eat",
+        "blind_time",
 
     ]
 
@@ -31,3 +33,9 @@ def file_init_setting():
 
             if (file == "water_setting"):
                 file_write(file,"0,10")
+
+            if (file == "pet_eat"):
+                file_write(file,"0,12,0,12,0")
+
+            if (file == "blind_time"):
+                file_write(file,"0,12,0,6,0")
